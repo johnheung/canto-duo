@@ -1,6 +1,6 @@
 # CantoDuo
 
-A mobile app for learning Cantonese a few minutes a day. It's built with Expo (React Native) and runs on iOS and Android. There's no login: progress is saved on the device.
+A mobile app for learning Cantonese a few minutes a day. It's built with Expo (React Native) for **Android**, and only Android builds are set up. There's no login: progress is saved on the phone.
 
 ## Features
 
@@ -19,7 +19,7 @@ A mobile app for learning Cantonese a few minutes a day. It's built with Expo (R
 
 - **Motivation**: XP, a daily goal, a streak, hearts (optional), lesson levels (each lesson can be levelled up 3 times), and a celebration screen. Wrong answers come back at the end of the lesson.
 - **Practice**: a spaced-repetition review (Leitner boxes) of your weakest and overdue words. Each practice session earns a heart.
-- **Audio**: the device's Cantonese text-to-speech voice (`zh-HK`). If the device has no Cantonese voice, Settings says so.
+- **Audio**: the phone's Cantonese text-to-speech voice (`yue-HK` / `zh-HK`). If none is installed, the Learn screen shows a one-time tip and Settings gives the steps: *Settings → System → Languages → Text-to-speech output → Speech Services by Google → ⚙ → Install voice data → Cantonese (Hong Kong)*. Then tap **Check again** in CantoDuo's Settings.
 
 ## Difficulty
 
@@ -44,7 +44,7 @@ Each lesson gets a difficulty score from 0 to 10: `level base + 0.75 × unit + l
 
 ```bash
 npm install
-npm run start   # scan the QR code with Expo Go, or press i / a for a simulator
+npm run start   # scan the QR code with the Expo Go app on your Android phone, or press a for an emulator
 npm run web     # run in the browser
 npm test        # engine, progress and exercise component tests
 npm run typecheck
@@ -60,6 +60,14 @@ Deployment works the same way as in the Fitness App: EAS Build, started from Git
    - `production`: a store build with automatic version numbers
 
 The profiles are in `eas.json`. The workflow is in `.github/workflows/eas-build.yml`.
+
+### Installing the APK on your phone
+
+1. When the `preview` run finishes, open its log. The **Build on EAS** step ends with a link to the build page on expo.dev.
+2. Open that link on your phone, or scan the build page's QR code, and tap **Install** to download the `.apk`.
+3. Open the downloaded file. The first time, Android asks you to allow your browser to **Install unknown apps**. Allow it, then install.
+
+Because EAS signs every build with the same stored key, a new `preview` build installs over the old one and keeps your progress.
 
 ## Project structure
 

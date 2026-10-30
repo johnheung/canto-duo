@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { useProgress } from '@/lib/context/ProgressContext';
 import { LEVELS } from '@/lib/engine/difficulty';
 import { DAILY_GOALS } from '@/lib/progress';
-import { detectCantoneseVoice, speak } from '@/lib/speech';
+import { ANDROID_VOICE_STEPS, speak, useCantoneseVoice } from '@/lib/speech';
 import { ScriptPreference } from '@/lib/types';
 import { confirm } from '@/lib/ui';
 import { theme } from '@/lib/theme';
@@ -47,11 +47,7 @@ function Segmented<T extends string | number>({
 export default function SettingsScreen() {
   const { state, updateSettings, reset } = useProgress();
   const { settings } = state;
-  const [voice, setVoice] = useState<string | null | undefined>(undefined);
-
-  useEffect(() => {
-    detectCantoneseVoice().then(setVoice);
-  }, []);
+  const { voice, recheck } = useCantoneseVoice();
 
   const levelInfo = LEVELS.find((l) => l.id === settings.level);
 
@@ -100,13 +96,16 @@ export default function SettingsScreen() {
           <Row label="Hearts" detail="Lose a heart for each mistake. Off means unlimited mistakes.">
             <Switch value={settings.hearts} onValueChange={(hearts) => updateSettings({ hearts })} />
           </Row>
-          <Text style={styles.note}>
+          <Text style={styles.note} testID="voice-status">
             {voice === undefined
               ? 'Checking for a Cantonese voice…'
               : voice
                 ? `Cantonese voice found (${voice}).`
-                : 'No Cantonese voice found. Install a Cantonese (Hong Kong) voice in your device’s text-to-speech settings for audio.'}
+                : `No Cantonese voice found, so audio will sound wrong. To install one: ${ANDROID_VOICE_STEPS}`}
           </Text>
+          {voice === null ? (
+            <Button testID="voice-recheck" label="Check again" variant="secondary" onPress={recheck} />
+          ) : null}
           <Button label="Test voice · 你好" variant="secondary" onPress={() => speak('你好')} />
         </Section>
 

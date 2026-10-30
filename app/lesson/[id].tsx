@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+// Consistent across Android versions with edge-to-edge, unlike React Native's own.
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '@/components/Screen';
@@ -142,7 +144,7 @@ function LessonRunner({ id }: { id: string }) {
       </View>
       {ref.kind === 'checkpoint' ? <Text style={styles.tag}>Checkpoint · score 80% to pass</Text> : null}
 
-      <KeyboardAvoidingView style={styles.body} behavior={Platform.OS === 'web' ? undefined : 'padding'}>
+      <KeyboardAvoidingView style={styles.body} behavior="padding">
         <ExerciseView
           key={exercise.id}
           exercise={exercise}

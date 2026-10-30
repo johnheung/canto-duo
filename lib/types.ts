@@ -91,6 +91,8 @@ export interface Settings {
   sound: boolean;
   hearts: boolean;
   dailyGoal: number;
+  /** The "install a Cantonese voice" tip on the Learn screen was dismissed. */
+  voiceTipDismissed: boolean;
 }
 
 export interface ProgressState {

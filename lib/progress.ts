@@ -24,7 +24,7 @@ export const DAILY_GOALS = [
 export function initialState(now: number = Date.now()): ProgressState {
   return {
     onboarded: false,
-    settings: { level: 'beginner', script: 'auto', sound: true, hearts: false, dailyGoal: 20 },
+    settings: { level: 'beginner', script: 'auto', sound: true, hearts: false, dailyGoal: 20, voiceTipDismissed: false },
     lessons: {},
     unlockedUnitIndex: 0,
     passedCheckpoints: [],

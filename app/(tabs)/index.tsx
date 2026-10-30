@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { HeaderStats } from '@/components/HeaderStats';
+import { VoiceTip } from '@/components/VoiceTip';
 import { useProgress } from '@/lib/context/ProgressContext';
 import { checkpointId, units } from '@/lib/content';
 import {
@@ -142,7 +143,10 @@ export default function LearnScreen() {
   return (
     <Screen>
       <HeaderStats />
-      <ScrollView contentContainerStyle={styles.path}>{units.map(renderUnit)}</ScrollView>
+      <ScrollView contentContainerStyle={styles.path}>
+        <VoiceTip />
+        {units.map(renderUnit)}
+      </ScrollView>
     </Screen>
   );
 }
