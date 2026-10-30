@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, BackHandler, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '@/components/Screen';
@@ -21,6 +21,19 @@ const PRAISE = ['Nice!', 'Great job!', 'Correct!', 'Excellent!', '好嘢! (hou2 
 
 export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { loading } = useProgress();
+  // Wait for saved progress, or the lesson would be planned for a brand-new learner.
+  if (loading) {
+    return (
+      <Screen style={styles.loading}>
+        <ActivityIndicator color={theme.colors.primary} />
+      </Screen>
+    );
+  }
+  return <LessonRunner key={id} id={id} />;
+}
+
+function LessonRunner({ id }: { id: string }) {
   const { state, answer, loseHeart, complete } = useProgress();
   const ref = useMemo(() => resolveLesson(id), [id]);
 
@@ -32,20 +45,29 @@ export default function LessonScreen() {
   const firstTry = useRef(new Map<string, boolean>());
   const mistakes = useRef(0);
 
+  // Android back button asks before throwing the lesson away, like the close button.
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      quitLesson();
+      return true;
+    });
+    return () => sub.remove();
+  }, []);
+
   const isPractice = ref?.kind === 'practice';
   const heartsOn = state.settings.hearts && !isPractice;
   const hearts = currentHearts(state, Date.now());
   const originalCount = plan?.exercises.length ?? 0;
 
   if (!ref || !plan) {
-    return <Message title="Lesson not found" onClose={() => router.back()} />;
+    return <Message title="Lesson not found" onClose={leave} />;
   }
   if (isPractice && plan.exercises.length === 0) {
     return (
       <Message
         title="Nothing to practise yet"
         detail={`Finish a lesson first. Practice reviews words you've learned (at least ${MIN_PRACTICE_WORDS}).`}
-        onClose={() => router.back()}
+        onClose={leave}
       />
     );
   }
@@ -109,14 +131,10 @@ export default function LessonScreen() {
     else setIndex(index + 1);
   };
 
-  const quit = async () => {
-    if (await confirm('Quit lesson?', "You'll lose your progress in this lesson.", 'Quit')) router.back();
-  };
-
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
       <View style={styles.top}>
-        <Pressable testID="quit" onPress={quit} hitSlop={12}>
+        <Pressable testID="quit" onPress={quitLesson} hitSlop={12}>
           <Ionicons name="close" size={30} color={theme.colors.textMuted} />
         </Pressable>
         <ProgressBar value={index / queue.length} />
@@ -124,7 +142,7 @@ export default function LessonScreen() {
       </View>
       {ref.kind === 'checkpoint' ? <Text style={styles.tag}>Checkpoint · score 80% to pass</Text> : null}
 
-      <View style={styles.body}>
+      <KeyboardAvoidingView style={styles.body} behavior={Platform.OS === 'web' ? undefined : 'padding'}>
         <ExerciseView
           key={exercise.id}
           exercise={exercise}
@@ -133,7 +151,7 @@ export default function LessonScreen() {
           locked={!!feedback}
           onResult={onResult}
         />
-      </View>
+      </KeyboardAvoidingView>
 
       {feedback ? (
         <View
@@ -167,12 +185,24 @@ export default function LessonScreen() {
   );
 }
 
+async function quitLesson() {
+  if (await confirm('Quit lesson?', "You'll lose your progress in this lesson.", 'Quit')) leave();
+}
+
+/** Back to where the lesson was opened from, or home when opened directly (deep link, web refresh). */
+function leave() {
+  if (router.canGoBack()) router.back();
+  else router.replace('/');
+}
+
 function Message({ title, detail, onClose }: { title: string; detail?: string; onClose: () => void }) {
   return (
-    <Screen edges={['top', 'bottom', 'left', 'right']} style={styles.message}>
-      <Text style={styles.messageTitle}>{title}</Text>
-      {detail ? <Text style={styles.messageDetail}>{detail}</Text> : null}
-      <Button label="OK" onPress={onClose} />
+    <Screen edges={['top', 'bottom', 'left', 'right']}>
+      <ScrollView contentContainerStyle={styles.message}>
+        <Text style={styles.messageTitle}>{title}</Text>
+        {detail ? <Text style={styles.messageDetail}>{detail}</Text> : null}
+        <Button testID="message-ok" label="OK" onPress={onClose} />
+      </ScrollView>
     </Screen>
   );
 }
@@ -194,11 +224,8 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
   },
+  // In the layout flow (not overlaid), so the exercise above stays fully scrollable.
   sheet: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
     padding: theme.spacing(5),
     paddingBottom: theme.spacing(8),
     gap: theme.spacing(3),
@@ -221,7 +248,12 @@ const styles = StyleSheet.create({
   correctionStrong: {
     fontWeight: '800',
   },
+  loading: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   message: {
+    flexGrow: 1,
     justifyContent: 'center',
     padding: theme.spacing(6),
     gap: theme.spacing(4),

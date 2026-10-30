@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   content: {
     padding: theme.spacing(5),
     gap: theme.spacing(5),
-    paddingBottom: theme.spacing(40),
+    paddingBottom: theme.spacing(8),
   },
   badge: {
     color: theme.colors.accent,

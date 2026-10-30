@@ -19,13 +19,13 @@ export default function Onboarding() {
   if (step === 'welcome') {
     return (
       <Screen style={styles.welcome} edges={['top', 'bottom', 'left', 'right']}>
-        <View style={styles.hero}>
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.hero}>
           <View style={styles.logo}>
             <Text style={styles.logoText}>粵</Text>
           </View>
           <Text style={styles.brand}>CantoDuo</Text>
           <Text style={styles.tagline}>Learn Cantonese a few minutes a day. Free, no account needed.</Text>
-        </View>
+        </ScrollView>
         <Button testID="get-started" label="Get started" onPress={() => setStep('level')} />
       </Screen>
     );
@@ -81,11 +81,14 @@ export default function Onboarding() {
 
 const styles = StyleSheet.create({
   welcome: {
-    justifyContent: 'space-between',
     padding: theme.spacing(6),
+    gap: theme.spacing(4),
+  },
+  scroll: {
+    flex: 1,
   },
   hero: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing(4),

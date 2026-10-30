@@ -46,7 +46,7 @@ Each lesson gets a difficulty score from 0 to 10: `level base + 0.75 × unit + l
 npm install
 npm run start   # scan the QR code with Expo Go, or press i / a for a simulator
 npm run web     # run in the browser
-npm test        # engine and progress tests
+npm test        # engine, progress and exercise component tests
 npm run typecheck
 ```
 
@@ -70,7 +70,7 @@ lib/content/         Course data (course.ts) and lookups
 lib/engine/          Pure logic: difficulty, lesson generation, grading, spaced repetition, lesson planning
 lib/progress.ts      XP, streaks, hearts, unlocking (pure functions)
 lib/context/         React context that persists progress with AsyncStorage
-__tests__/           Jest tests for the engine and progress rules
+__tests__/           Jest tests: engine, progress rules and every exercise component
 ```
 
 To add content, add words or sentences in `lib/content/course.ts`. In a sentence, separate the tokens with `|` in both the characters and the Jyutping. Each token's Jyutping needs one syllable per character, and the tests check this.

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '@/components/Screen';
@@ -36,7 +36,7 @@ export default function CompleteScreen() {
 
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']} style={styles.root}>
-      <View style={styles.hero}>
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.hero}>
         <Animated.View
           style={[
             styles.badge,
@@ -70,7 +70,7 @@ export default function CompleteScreen() {
             <ProgressBar value={today / goal} color={theme.colors.xp} />
           </View>
         </View>
-      </View>
+      </ScrollView>
       <Button testID="done" label="Continue" onPress={() => router.replace('/')} />
     </Screen>
   );
@@ -101,10 +101,13 @@ function Stat({
 const styles = StyleSheet.create({
   root: {
     padding: theme.spacing(6),
-    justifyContent: 'space-between',
+    gap: theme.spacing(4),
+  },
+  scroll: {
+    flex: 1,
   },
   hero: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing(5),
