@@ -1,4 +1,4 @@
-# CantoDuo
+# Learn Canto with Dad
 
 A mobile app for learning Cantonese a few minutes a day. It's built with Expo (React Native) for **Android**, and only Android builds are set up. There's no login: progress is saved on the phone.
 
@@ -19,7 +19,7 @@ A mobile app for learning Cantonese a few minutes a day. It's built with Expo (R
 
 - **Motivation**: XP, a daily goal, a streak, hearts (optional), lesson levels (each lesson can be levelled up 3 times), and a celebration screen. Wrong answers come back at the end of the lesson.
 - **Practice**: a spaced-repetition review (Leitner boxes) of your weakest and overdue words. Each practice session earns a heart.
-- **Audio**: the phone's Cantonese text-to-speech voice (`yue-HK` / `zh-HK`). If none is installed, the Learn screen shows a one-time tip and Settings gives the steps: *Settings → System → Languages → Text-to-speech output → Speech Services by Google → ⚙ → Install voice data → Cantonese (Hong Kong)*. Then tap **Check again** in CantoDuo's Settings.
+- **Audio**: the phone's Cantonese text-to-speech voice (`yue-HK` / `zh-HK`). If none is installed, the Learn screen shows a one-time tip and Settings gives the steps: *Settings → System → Languages → Text-to-speech output → Speech Services by Google → ⚙ → Install voice data → Cantonese (Hong Kong)*. Then tap **Check again** in the app's Settings.
 
 ## Difficulty
 

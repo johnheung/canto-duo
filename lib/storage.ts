@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressState } from '@/lib/types';
 import { initialState } from '@/lib/progress';
 
-const STATE_KEY = 'cantoduo.state.v1';
+const STATE_KEY = 'learncantowithdad.state.v1';
 
 export async function loadState(): Promise<ProgressState> {
   const raw = await AsyncStorage.getItem(STATE_KEY);
