@@ -23,7 +23,7 @@ export default function Onboarding() {
           <View style={styles.logo}>
             <Text style={styles.logoText}>粵</Text>
           </View>
-          <Text style={styles.brand}>CantoDuo</Text>
+          <Text style={styles.brand}>Learn Canto with Dad</Text>
           <Text style={styles.tagline}>Learn Cantonese a few minutes a day. Free, no account needed.</Text>
         </ScrollView>
         <Button testID="get-started" label="Get started" onPress={() => setStep('level')} />
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     color: theme.colors.text,
     fontSize: 36,
     fontWeight: '900',
+    textAlign: 'center',
   },
   tagline: {
     color: theme.colors.textMuted,

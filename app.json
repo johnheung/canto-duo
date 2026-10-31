@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "CantoDuo",
-    "slug": "canto-duo",
-    "scheme": "cantoduo",
+    "name": "Learn Canto with Dad",
+    "slug": "learn-canto-with-dad",
+    "scheme": "learncantowithdad",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.johnheung.cantoduo",
+      "package": "com.johnheung.learncantowithdad",
       "adaptiveIcon": {
         "backgroundColor": "#14B8A6",
         "foregroundImage": "./assets/android-icon-foreground.png",
